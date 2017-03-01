@@ -1,4 +1,9 @@
-Angular-Facebook [![Build Status](http://img.shields.io/travis/Ciul/angular-facebook.svg?style=flat)](https://travis-ci.org/Ciul/angular-facebook) [![npm version](https://badge.fury.io/js/angularjs-facebook.svg)](http://badge.fury.io/js/angularjs-facebook) [![Bower version](https://badge.fury.io/bo/angular-facebook.svg)](http://badge.fury.io/bo/angular-facebook)
+Angular-Facebook [![Build Status](https://travis-ci.org/wallyhall/angular-facebook.svg?branch=master)](https://travis-ci.org/wallyhall/angular-facebook)
+
+Original fork from NPM/Bower:
+
+[![npm version](https://badge.fury.io/js/angularjs-facebook.svg)](http://badge.fury.io/js/angularjs-facebook) [![Bower version](https://badge.fury.io/bo/angular-facebook.svg)](http://badge.fury.io/bo/angular-facebook)
+
 ==================
 
 > An AngularJS module based approach to the [Facebook Javascript SDK](https://developers.facebook.com/docs/reference/javascript/).
