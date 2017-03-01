@@ -1,5 +1,7 @@
 describe('Provider: facebookProvider', function () {
-  var facebook, facebookProvider;
+  var facebook, facebookProvider, $q, $timeout, $rootScope, $window;
+
+  var fbSubscribeEventFunctions, fbUnsubscribeEventFunctions;
 
   beforeEach(function () {
     // Load the service's module
@@ -7,9 +9,38 @@ describe('Provider: facebookProvider', function () {
       facebookProvider = _FacebookProvider_;
     });
 
-    inject(function (_Facebook_) {
+    inject(function (_Facebook_, _$q_, _$timeout_, _$rootScope_, _$window_) {
       facebook = _Facebook_;
+      $q = _$q_;
+      $timeout = _$timeout_;
+      $rootScope = _$rootScope_;
+      $window = _$window_;
     });
+
+    fbSubscribeEventFunctions = {};
+    fbUnsubscribeEventFunctions = {};
+
+    $window.FB = {
+      init: function () {},
+      Event: {
+        subscribe: function (name, callback) {
+          fbSubscribeEventFunctions[name] = callback;
+        },
+        unsubscribe: function (name, callback) {
+          fbUnsubscribeEventFunctions[name] = callback;
+        }
+      },
+      getLoginStatus: function (callback) {
+        getLoginStatusCallback = callback;
+      },
+      api: function (callback) {
+        apiCallback = callback;
+      },
+      login: function (callback) {
+        loginCallback = callback;
+      },
+      XFBML: jasmine.createSpyObj('XFBML', ['parse'])
+    };
   });
 
   describe('the provider api should', function () {
@@ -113,38 +144,6 @@ describe('Provider: facebookProvider', function () {
       facebookProvider.setInitCustomOption('someKey', obj);
       expect(facebookProvider.getInitOption('someKey')).toBe(obj);
       expect(facebookProvider.getInitOption()).toBe(false);
-    });
-
-    it('consume the appId in the init method as normal string', function () {
-      facebookProvider.init('1234567');
-      expect(facebookProvider.getInitOption('appId')).toBe('1234567');
-    });
-
-    it('consume the appId in the init method as number', function () {
-      facebookProvider.init(1234567);
-      expect(facebookProvider.getInitOption('appId')).toBe('1234567');
-    });
-
-    it('consume the appId in the init method as object', function () {
-      facebookProvider.init({
-        appId: '123456'
-      });
-      expect(facebookProvider.getInitOption('appId')).toBe('123456');
-    });
-
-    it('define to load the sdk or not in the init method', function () {
-      facebookProvider.init({
-        appId: '123456'
-      }, false);
-      expect(facebookProvider.getInitOption('loadSDK')).toBe(false);
-    });
-
-    // todo(mrzmyr): is this ready useful ?
-    it('use the previous set appId if using the init mehtod twice', function () {
-      facebookProvider.setInitCustomOption('appId', '123');
-      expect(facebookProvider.getInitOption('appId')).toBe('123');
-      facebookProvider.init(undefined);
-      expect(facebookProvider.getInitOption('appId')).toBe('123');
     });
   });
 });
